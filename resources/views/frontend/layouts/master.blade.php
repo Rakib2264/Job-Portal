@@ -8,11 +8,12 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no" />
     <meta name="HandheldFriendly" content="True" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="pinterest" content="nopin" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link rel="stylesheet" type="text/css" href="{{ asset('frontend') }}/assets/css/style.css" />
     <!-- Fav Icon -->
-    <link rel="shortcut icon" type="image/x-icon" href="#" />
+     <link rel="shortcut icon" type="image/x-icon" href="#" />
 </head>
 
 <body data-instant-intensity="mousedown">
@@ -42,7 +43,7 @@
     </header>
 
      @yield('content')
-     
+
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -80,6 +81,14 @@
     <script src="{{ asset('frontend') }}/assets/js/slick.min.js"></script>
     <script src="{{ asset('frontend') }}/assets/js/lightbox.min.js"></script>
     <script src="{{ asset('frontend') }}/assets/js/custom.js"></script>
+    <script>
+        $.ajaxSetup({
+    headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+    @yield('customJs')
 </body>
 
 </html>
