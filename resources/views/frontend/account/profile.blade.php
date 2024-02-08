@@ -18,28 +18,32 @@
             </div>
             <div class="col-lg-9">
                 <div class="card border-0 shadow mb-4">
+                  <form action="" method="post" id="userForm" name="userForm">
                     <div class="card-body  p-4">
                         <h3 class="fs-4 mb-1">My Profile</h3>
                         <div class="mb-4">
                             <label for="" class="mb-2">Name*</label>
-                            <input type="text" placeholder="Enter Name" class="form-control" value="">
+                            <input type="text" name="name" id="name" value="{{$user->name}}" placeholder="Enter Name" class="form-control"  >
+                            <span class="text-danger spn-name"></span>
                         </div>
                         <div class="mb-4">
                             <label for="" class="mb-2">Email*</label>
-                            <input type="text" placeholder="Enter Email" class="form-control">
+                            <input type="text" name="email" id="email" value="{{$user->email}}" placeholder="Enter Email" class="form-control">
+                            <span class="text-danger spn-email"></span>
                         </div>
                         <div class="mb-4">
-                            <label for="" class="mb-2">Designation*</label>
-                            <input type="text" placeholder="Designation" class="form-control">
-                        </div>
+                            <label for="" class="mb-2">Designation</label>
+                            <input type="text" name="designation" value="{{$user->designation}}" placeholder="Designation" class="form-control">
+                         </div>
                         <div class="mb-4">
-                            <label for="" class="mb-2">Mobile*</label>
-                            <input type="text" placeholder="Mobile" class="form-control">
-                        </div>
+                            <label for="" class="mb-2">Mobile</label>
+                            <input type="text" name="mobile" value="{{$user->mobile}}" placeholder="Mobile" class="form-control">
+                         </div>
                     </div>
                     <div class="card-footer  p-4">
-                        <button type="button" class="btn btn-primary">Update</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
+                  </form>
                 </div>
 
                 <div class="card border-0 shadow mb-4">
@@ -66,4 +70,35 @@
         </div>
     </div>
 </section>
+@endsection
+
+@section('customJs')
+
+   <script type="text/javascript">
+
+       $("#userForm").submit(function(e){
+        e.preventDefault()
+
+              $.ajax({
+                url:'{{ route('updateProfile') }}',
+                type:'put',//user informaction update that why put
+                dataType:'json',
+                data:$('#userForm').serializeArray(),
+                success:function(res){
+
+                            if (res.status == 'faild') {
+                                $('.spn-name').text(res.errors.name);
+                                $('.spn-email').text(res.errors.email);
+
+                            }else{
+                                window.location.href='{{ route('profile') }}'
+                            }
+
+                }
+              });
+
+       });
+
+   </script>
+
 @endsection
