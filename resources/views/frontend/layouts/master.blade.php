@@ -57,10 +57,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="profilePic" name="profilePic" action="" method="POST">
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Profile Image</label>
                             <input type="file" class="form-control" id="image" name="image">
+                            <small class="text-danger spn-pic"></small>
                         </div>
                         <div class="d-flex justify-content-end">
                             <button type="submit" class="btn btn-primary mx-3">Update</button>
@@ -85,13 +86,38 @@
     <script src="{{ asset('frontend') }}/assets/js/slick.min.js"></script>
     <script src="{{ asset('frontend') }}/assets/js/lightbox.min.js"></script>
     <script src="{{ asset('frontend') }}/assets/js/custom.js"></script>
- 
+
     <script>
         $.ajaxSetup({
     headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        // Profile Pic
+        $('#profilePic').submit(function(e){
+            e.preventDefault()
+            var formData = new FormData(this);
+            $.ajax({
+                url:'{{ route('updateProfilePic') }}',
+                type:'post',
+                dataType:'json',
+                contentType:false,
+                processData:false,
+                data:formData,
+                success:function(res){
+
+                    if (res.status == 'faild') {
+                                $('.spn-pic').text(res.errors.image);
+
+                            }else{
+                                window.location.href='{{ route('profile') }}'
+                            }
+
+                }
+            });
+
+        })
     </script>
     @yield('customJs')
 </body>

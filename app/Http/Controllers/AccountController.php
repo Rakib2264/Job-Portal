@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 class AccountController extends Controller
 {
     //This method will show user registation page
@@ -88,7 +90,6 @@ class AccountController extends Controller
                 'status'=>'faild',
                 'errors'=>$validator->messages()
             ]);
-
           }else{
             $user = User::find($id);
             $user->name = $request->name;
@@ -98,7 +99,6 @@ class AccountController extends Controller
             $user->save();
             session()->flash('success','Profile Updated successfully.');
             return response()->json([
-
             ]);
           }
 
@@ -107,5 +107,48 @@ class AccountController extends Controller
     public function logout(){
         Auth::logout();
         return redirect()->route('processLogin');
+    }
+
+    public function updateProfilePic(Request $request){
+        $id = Auth::user()->id;
+        $validator = Validator::make($request->all(),[
+            'image'=>'required|image',
+
+          ]);
+          if($validator->fails()){
+            return response()->json([
+                'status'=>'faild',
+                'errors'=>$validator->messages()
+            ]);
+          }else{
+
+             $image = $request->image;
+            $ext = $image->getClientOriginalExtension();
+            $imageName = $id.'_'.time().'.'.$ext; //3-121212.jpg
+            $image->move(public_path('images/profile/'),$imageName);
+
+            // create a small thum
+                $sourcePath = public_path('images/profile/'.$imageName);
+                $manager = new ImageManager(Driver::class);
+                $image = $manager->read($sourcePath);
+
+                // crop the best fitting 5:3 (600x360) ratio and resize to 600x360 pixel
+                $image->cover(150, 150);
+                $image->toPng()->save(public_path('images/thum/').$imageName);
+
+                // delete old profile pic
+                File::delete(public_path('images/profile/').Auth::user()->image);
+                File::delete(public_path('images/thum/').Auth::user()->image);
+
+           User::where('id',$id)->update([
+
+            'image'=>$imageName
+           ]);
+
+            session()->flash('success','Profile Image Saved.');
+            return response()->json([
+            ]);
+          }
+
     }
 }
