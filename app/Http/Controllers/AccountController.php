@@ -122,12 +122,12 @@ class AccountController extends Controller
             ]);
           }else{
 
-             $image = $request->image;
+            $image = $request->image;
             $ext = $image->getClientOriginalExtension();
             $imageName = $id.'_'.time().'.'.$ext; //3-121212.jpg
             $image->move(public_path('images/profile/'),$imageName);
 
-            // create a small thum
+                // create a small thum
                 $sourcePath = public_path('images/profile/'.$imageName);
                 $manager = new ImageManager(Driver::class);
                 $image = $manager->read($sourcePath);
@@ -141,7 +141,6 @@ class AccountController extends Controller
                 File::delete(public_path('images/thum/').Auth::user()->image);
 
            User::where('id',$id)->update([
-
             'image'=>$imageName
            ]);
 
