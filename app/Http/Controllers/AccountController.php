@@ -205,7 +205,7 @@ class AccountController extends Controller
     }
 
     public function myJob(){
-     $jobs = Job::where('user_id',Auth::user()->id)->with('jobType','category')->paginate(5);
+     $jobs = Job::where('user_id',Auth::user()->id)->with('jobType','category')->orderBy('created_at','DESC')->paginate(5);
        return view('frontend.account.job.my-jobs',compact('jobs'));
     }
 
@@ -264,4 +264,20 @@ class AccountController extends Controller
         }
 
     }
+    public function deleteJob(Request $request){
+
+      $job = Job::where(['user_id'=>Auth::user()->id,'id'=>$request->id])->first();
+
+      if($job == null){
+        session()->flash('error','Job Not Found');
+        return response()->json([
+            'status'=>true
+        ]);
+      }
+
+      $job->where('id',$request->id)->delete();
+      session()->flash('info','Job Deleted');
+      return response()->json([
+          'status'=>true
+      ]);    }
 }
