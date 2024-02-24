@@ -16,7 +16,7 @@
         <div class="container job_details_area">
             <div class="row pb-5">
                 <div class="col-md-8">
-                     <div class="card shadow border-0">
+                    <div class="card shadow border-0">
                         <div class="job_details_header">
                             <div class="single_jobs white-bg d-flex justify-content-between">
                                 <div class="jobs_left d-flex align-items-center">
@@ -96,7 +96,8 @@
                             <div class="job_content pt-3">
                                 <ul>
                                     <li>Published on:
-                                        <span>{{ \Carbon\Carbon::parse($job->created_at)->format('d, M Y') }}</span></li>
+                                        <span>{{ \Carbon\Carbon::parse($job->created_at)->format('d, M Y') }}</span>
+                                    </li>
                                     <li>Vacancy: <span>{{ $job->vacancy }}</span></li>
                                     <li>Salary: <span>{{ $job->salary }}</span></li>
                                     <li>Location: <span>{{ $job->location }}</span></li>
@@ -130,17 +131,19 @@
     <script type="text/javascript">
         function applyJob(id) {
 
-                 if(confirm("Are You Sure You Want Apply This Job?")){
-                    $.ajax({
-                        url:'{{ route('applyJob') }}',
-                        type:'post',
-                        data:{id:id},
-                        dataType:'json',
-                        success:function(){
-                            window.location.href="{{ url()->current() }}";
-                        }
-                    });
-                 }
+            if (confirm("Are You Sure You Want Apply This Job?")) {
+                $.ajax({
+                    url: '{{ route('applyJob') }}',
+                    type: 'post',
+                    data: {
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function() {
+                        window.location.href = "{{ url()->current() }}";
+                    }
+                });
+            }
 
         }
     </script>
