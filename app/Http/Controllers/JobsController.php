@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Job;
 use App\Models\JobApplication;
 use App\Models\JobType;
+use App\Models\Saved_Job;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,8 +74,13 @@ class JobsController extends Controller
         if ($job == null) {
             abort(404);
         }
+           // Check if the user has already saved the job
+           $count = Saved_Job::where([
+            'user_id' => Auth::user()->id,
+            'job_id' => $id,
+        ])->count();
 
-        return view('frontend.detail', compact('job'));
+        return view('frontend.detail', compact('job','count'));
     }
 
     public function applyJob(Request $request)
@@ -133,5 +139,42 @@ class JobsController extends Controller
             'status' => true,
             'msg' => 'applied'
         ]);
+    }
+
+    public function saveJobwish(Request $request)
+    {
+        // Get the job ID from the request
+        $id = $request->id;
+
+        // Find the job by its ID
+        $job = Job::find($id);
+
+        // If the job does not exist, return an error response
+        if ($job == null) {
+            session()->flash('success', 'Job Not Found');
+            return response()->json(['status' => false]);
+        }
+
+        // Check if the user has already saved the job
+        $count = Saved_Job::where([
+            'user_id' => Auth::user()->id,
+            'job_id' => $id,
+        ])->count();
+
+        // If the job has already been saved by the user, return an error response
+        if ($count > 0) {
+            session()->flash('error', 'You Already Saved This Job');
+            return response()->json(['status' => false]);
+        }
+
+        // If the job is not already saved by the user, create a new Saved_Job record
+        $savedJob = new Saved_Job();
+        $savedJob->job_id = $id;
+        $savedJob->user_id = Auth::user()->id;
+        $savedJob->save();
+
+        // Return a success response
+        session()->flash('success', 'Saved This Job');
+        return response()->json(['status' => true]);
     }
 }

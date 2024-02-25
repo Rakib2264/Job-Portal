@@ -20,12 +20,12 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/',[HomeController::class,'index'])->name('home');
-Route::get('/jobs',[JobsController::class,'index'])->name('jobs');
-Route::get('/job/detail/{id}',[JobsController::class,'details'])->name('details');
-Route::post('/job/apply',[JobsController::class,'applyJob'])->name('applyJob');
-
-
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/jobs', [JobsController::class, 'index'])->name('jobs');
+Route::get('/job/detail/{id}', [JobsController::class, 'details'])->name('details');
+Route::post('/job/apply', [JobsController::class, 'applyJob'])->name('applyJob');
+// save jobs
+Route::post('/my/Job/saveJobwish', [JobsController::class, 'saveJobwish'])->name('saveJobwish');
 
 Route::group(['prefix' => 'account'], function () {
 
@@ -52,7 +52,4 @@ Route::group(['prefix' => 'account'], function () {
         Route::get('/my/Job/appli', [AccountController::class, 'myJobApplication'])->name('myJobApplication');
         Route::post('/my/Job/remove', [AccountController::class, 'removeJob'])->name('removeJob');
     });
-
 });
-
-

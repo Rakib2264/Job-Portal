@@ -36,8 +36,9 @@
                                     </div>
                                 </div>
                                 <div class="jobs_right">
-                                    <div class="apply_now">
-                                        <a class="heart_mark" href="#"> <i class="fa fa-heart-o"
+
+                                    <div class="apply_now {{($count==1)?'save-job':''}}">
+                                        <a class="heart_mark" href="javascript:void(0)" onclick="saveJobwish({{ $job->id }})" > <i class="fa fa-heart-o"
                                                 aria-hidden="true"></i></a>
                                     </div>
                                 </div>
@@ -76,13 +77,21 @@
                             </div>
                             <div class="border-bottom"></div>
                             <div class="pt-3 text-end">
-                                <a href="#" class="btn btn-secondary">Save</a>
+
+                                @if (Auth::check())
+                                    <a href="#" onclick="saveJobwish({{ $job->id }})"
+                                        class="btn btn-secondary">Save</a>
+                                @else
+                                    <a href="#" class="btn btn-secondary disabled">Login To Save</a>
+                                @endif
+
                                 @if (Auth::check())
                                     <a href="#" onclick="applyJob({{ $job->id }})"
                                         class="btn btn-success">Apply</a>
                                 @else
-                                    <a href="#" class="btn btn-success disabled ">Login To Apply</a>
+                                    <a href="#" class="btn btn-success disabled">Login To Apply</a>
                                 @endif
+
                             </div>
                         </div>
                     </div>
@@ -129,6 +138,7 @@
 @endsection
 @section('customJs')
     <script type="text/javascript">
+        // apply jobs
         function applyJob(id) {
 
             if (confirm("Are You Sure You Want Apply This Job?")) {
@@ -146,5 +156,31 @@
             }
 
         }
+        // end
+
+        //saveJobwish
+        function saveJobwish(id) {
+            // Send an AJAX request to the server to save the job
+            $.ajax({
+                url: '{{ route('saveJobwish') }}',
+                type: 'POST',
+                data: {
+                    id: id,
+                },
+                dataType: 'json',
+                success: function(response) {
+                    // If the request is successful, redirect to the current page
+                    if (response.status == true) {
+                        window.location.href = "{{ url()->current() }}";
+                    }
+                    if (response.status == false) {
+                        window.location.href = "{{ url()->current() }}";
+                    }
+                },
+
+            });
+        }
+
+        // end
     </script>
 @endsection
