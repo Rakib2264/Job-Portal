@@ -10025,3 +10025,6 @@ footer .nav-link {
     background: #00D363 !important;
     color: #fff !important;
 }
+.trumbowyg-editor ul li{
+    list-style: disc;
+}
