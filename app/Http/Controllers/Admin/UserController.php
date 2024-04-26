@@ -47,7 +47,7 @@ class UserController extends Controller
 
     public function delete(Request $request)
     {
-        $user = User::findOrFail($request->id);
+        $user = User::find($request->id);
         if ($user == null) {
             session()->flash('error','User Not Found.');
             return response()->json(['status' => false]);
