@@ -184,6 +184,33 @@
                                                     class="form-control">
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="mb-4 col-md-4">
+                                                <div class="form-check">
+                                                    <input {{($job->isfeatured == 1) ? 'checked':''}} class="form-check-input" type="checkbox" value="1" id="is_Featured" name="is_Featured">
+                                                    <label class="form-check-label" for="is_Featured">
+                                                        Featured
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="mb-4 col-md-8">
+                                                <div class="form-check-inline">
+                                                    <input {{($job->status == 1) ? 'checked':''}} class="form-check-input" type="checkbox" value="1" id="status-active" name="status">
+                                                    <label class="form-check-label" for="status-active">
+                                                        Active
+                                                    </label>
+                                                </div>
+                                                <div class="form-check-inline">
+                                                    <input {{($job->status == 0) ? 'checked':''}} class="form-check-input" type="checkbox" value="0" id="status-inactive" name="status">
+                                                    <label class="form-check-label" for="status-inactive">
+                                                        Blocked
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
 
                                         <div class="mb-4">
                                             <label for="" class="mb-2">Website</label>
