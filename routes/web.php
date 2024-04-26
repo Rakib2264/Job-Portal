@@ -33,6 +33,7 @@ Route::group(['prefix' => 'admin','middleware'=>'checkRole'], function () {
     Route::get('/users', [UserController::class, 'index'])->name('users');
     Route::get('/edit/{id}', [UserController::class, 'edit'])->name('edit');
     Route::post('/update/{id}', [UserController::class, 'update'])->name('update');
+    Route::delete('/delete', [UserController::class, 'delete'])->name('delete');
 });
 
 Route::group(['prefix' => 'account'], function () {

@@ -44,4 +44,16 @@ class UserController extends Controller
             return response()->json([]);
         }
     }
+
+    public function delete(Request $request)
+    {
+        $user = User::findOrFail($request->id);
+        if ($user == null) {
+            session()->flash('error','User Not Found.');
+            return response()->json(['status' => false]);
+        }
+        $user->delete();
+        session()->flash('success','User Deleted.');
+        return response()->json(['status' => true]);
+    }
 }
