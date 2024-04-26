@@ -37,6 +37,7 @@ Route::group(['prefix' => 'admin','middleware'=>'checkRole'], function () {
     Route::delete('/delete', [UserController::class, 'delete'])->name('delete');
     Route::get('/job/list', [JobController::class, 'index'])->name('job.list');
     Route::get('/job/edit/{id}', [JobController::class, 'edit'])->name('job.edit');
+    Route::put('/job/update/{id}', [JobController::class, 'update'])->name('job.update');
 
 });
 
