@@ -31,6 +31,8 @@ Route::post('/my/Job/saveJobwish', [JobsController::class, 'saveJobwish'])->name
 Route::group(['prefix' => 'admin','middleware'=>'checkRole'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/edit/{id}', [UserController::class, 'edit'])->name('edit');
+    Route::post('/update/{id}', [UserController::class, 'update'])->name('update');
 });
 
 Route::group(['prefix' => 'account'], function () {
