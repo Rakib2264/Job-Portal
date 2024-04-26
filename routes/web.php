@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobsController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,9 @@ Route::get('/job/detail/{id}', [JobsController::class, 'details'])->name('detail
 Route::post('/job/apply', [JobsController::class, 'applyJob'])->name('applyJob');
 // save jobs
 Route::post('/my/Job/saveJobwish', [JobsController::class, 'saveJobwish'])->name('saveJobwish');
+Route::group(['prefix' => 'admin','middleware'=>'checkRole'], function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
 
 Route::group(['prefix' => 'account'], function () {
 

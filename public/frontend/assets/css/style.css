@@ -10028,3 +10028,9 @@ footer .nav-link {
 .trumbowyg-editor ul li{
     list-style: disc;
 }
+.dashboard{
+    height: 400px !important;
+    justify-content: center !important;
+    align-items: center;
+    display: flex;
+}

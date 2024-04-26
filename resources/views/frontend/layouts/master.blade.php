@@ -39,6 +39,9 @@
                     @if (!Auth::check())
                     <a class="btn btn-outline-primary me-2" href="{{route('processLogin')}}" type="submit">Login</a>
                     @else
+                     @if (Auth::user()->role == 'admin')
+                     <a class="btn btn-outline-primary me-2" href="{{route('dashboard')}}" type="submit">Admin</a>
+                     @endif
                     <a class="btn btn-outline-primary me-2" href="{{route('profile')}}" type="submit">Account</a>
                     @endif
                     <a class="btn btn-primary" href="{{route('createJob')}}" type="submit">Post a Job</a>
@@ -77,7 +80,7 @@
 
     <footer class="bg-dark py-3 bg-2">
         <div class="container">
-            <p class="text-center text-white pt-3 fw-bold fs-6">© 2023 xyz company, all right reserved</p>
+            <p class="text-center text-white pt-3 fw-bold fs-6">© {{date('Y')}} xyz company, all right reserved</p>
         </div>
     </footer>
     <script src="{{ asset('frontend') }}/assets/js/jquery-3.6.0.min.js"></script>
